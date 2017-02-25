@@ -1,7 +1,6 @@
 import pyautogui, subprocess, time, logging
 
 projectName = 'MySong'
-exportIndex = 0
 soloLocations = []
 retina = True
 
@@ -9,7 +8,7 @@ retina = True
 def switchToAbleton():
     pyautogui.keyDown('command')
     pyautogui.press('tab')
-    logging.debug('Looking for Live icon...')
+    print 'Looking for Live icon...'
     time.sleep(1)
     button = pyautogui.locateCenterOnScreen('img/live.png', grayscale=True)
     pyautogui.moveTo(button[0]/2, button[1]/2)
@@ -18,6 +17,7 @@ def switchToAbleton():
 
 # Get The Locations of the Solo-ed tracks
 def getSoloLocations():
+    print 'Looking for solo-ed tracks...'
     locations = pyautogui.locateAllOnScreen('img/solo.png', grayscale=True)
     if locations == None:
         pyautogui.alert('You need to solo the tracks you want to export.')
@@ -50,12 +50,17 @@ def export(location, count):
     pyautogui.typewrite(str(count) + ' ' + projectName)
     pyautogui.press('enter')
     
-    logging.debug('Beginning export: '+str(count) + ' ' + projectName+'...')
+    print 'Beginning export: '+str(count) + ' ' + projectName+'.'
+
     # Wait till finished export
+    time.sleep(1)
     while True:
-        if (pyautogui.locateOnScreen('img/loading.png') == None):
+        location = pyautogui.locateOnScreen('img/loading.png') 
+        if location != None:
+            print 'Still exporting...'
+        else:
+            print 'Finished exporting: '+str(count) + ' ' + projectName+'.'
             break
-    logging.debug('Finished exporting: '+str(count) + ' ' + projectName+'.')
 
     # Unsolo the track
     pyautogui.moveTo(x, y)
@@ -63,14 +68,16 @@ def export(location, count):
     return 
 
 def main():
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s.%(msecs)03d: %(message)s', datefmt='%H:%M:%S')
-    logging.debug('Started Ableton Send Export.')
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s.%(msecs)03d: %(message)s', datefmt='%H:%M:%S')
+    print 'Started Ableton Export Bot.'
     global projectName
     projectName = pyautogui.prompt(text='Enter the project name', title='Ableton Export Bot', default='')
 
     # Check Retina Display
     if subprocess.call("system_profiler SPDisplaysDataType | grep 'retina'", shell=True) == 0:
         retina = True
+    else:
+        retina = False
 
     switchToAbleton()
     # Delay while switching
@@ -78,6 +85,7 @@ def main():
     
     global soloLocations
     soloLocations = list(getSoloLocations())
+    print 'Found ' + str(len(soloLocations)) + ' solo-ed tracks.'
 
     # Unclick all the solobuttons
     for location in soloLocations:
@@ -86,11 +94,10 @@ def main():
         pyautogui.moveTo(x, y)
         pyautogui.click()
 
-    logging.debug(len(soloLocations))
     # Export tracks
     i = 1
     for location in soloLocations:
-        logging.debug('Exporting first track...')
+        print 'Exporting first track...'
         export(location, i)
         i += 1
         
