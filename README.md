@@ -8,19 +8,15 @@ It's probably the least optimal solution to perform this, at least until Ableton
 ## Installation
 The bot uses a GUI automation library called [PyAutoGUI](https://github.com/asweigart/pyautogui) to manipulate the computer mouse and keyboard. PyAutoGUI also requires the installation of pyobjc-core and pyobjc (in that order). More information installation for PyAutoGUI can be found [here](https://github.com/asweigart/pyautogui).
 
-1) Install pyobjc-core
-`pip install pyobjc-core`
-2) Install pyobjc
-`pip install pyobjc`
-3) Install pyautogui
-`pip install pyautogui`
-4) Clone or download repository
-`git clone https://github.com/hankijord/ableton-export-bot.git`
+1. Install pyobjc-core: `pip install pyobjc-core`
+2. Install pyobjc: `pip install pyobjc`
+3. Install pyautogui: `pip install pyautogui`
+4. Clone or download repository: `git clone https://github.com/hankijord/ableton-export-bot.git`
 
 ## Usage
-1) Solo the all tracks you wish to export in Ableton
-2) Select the range of time on the master track, and ensure your export settings are as you wish
-3) Run the export bot:
+1. Solo the all tracks you wish to export in Ableton
+2. Select the range of time on the master track, and ensure your export settings are as you wish
+3. Run the export bot:
 ```python
 python main.py
 ```
