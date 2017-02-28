@@ -97,10 +97,10 @@ def main():
     # Export tracks
     i = 1
     for location in soloLocations:
-        print 'Exporting first track...'
         export(location, i)
         i += 1
         
+    print 'Export complete!'
     return
 
 main()
